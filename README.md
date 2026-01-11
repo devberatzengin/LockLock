@@ -5,7 +5,6 @@
 ![Python](https://img.shields.io/badge/Python-3.10%2B-blue)
 ![PyQt5](https://img.shields.io/badge/GUI-PyQt5-green)
 ![Security](https://img.shields.io/badge/Encryption-AES--256-red)
-![License](https://img.shields.io/badge/License-MIT-yellow)
 
 ---
 
@@ -14,6 +13,17 @@
 LoclLock, "Önce Güvenlik" ve "Modern UX" prensipleriyle geliştirilmiştir. Kullanıcıların hassas verilerini (şifreler, notlar) **AES-256** standardı ile şifreler ve bu verilere erişim sadece kullanıcının belirlediği **Master Password (Ana Şifre)** ile mümkündür.
 
 Veritabanı olarak **SQLite** kullanılır ancak veriler veritabanına yazılmadan *önce* şifrelenir. Bu sayede veritabanı dosyası (`app.db`) çalınsa bile içerisindeki veriler ana şifre olmadan anlamsızdır.
+
+## 📸 Ekran Görüntüleri
+
+** Giriş Ekranı ***
+<img width="399" height="611" alt="Screenshot 2026-01-11 at 11 34 11 PM" src="https://github.com/user-attachments/assets/f7d0b252-fcaa-4905-8831-ca06e0a1c630" />
+
+** Dashboard Ekranı **
+<img width="1204" height="834" alt="Screenshot 2026-01-11 at 11 36 24 PM" src="https://github.com/user-attachments/assets/1f8d1e63-ff6c-48c2-be18-10ffd0f2cf83" />
+
+** Add New Account Ekranı **
+<img width="404" height="638" alt="Screenshot 2026-01-11 at 11 39 33 PM" src="https://github.com/user-attachments/assets/9dbd71bf-b0eb-4393-9948-25bc9c9eaa0f" />
 
 ## ✨ Özellikler
 
