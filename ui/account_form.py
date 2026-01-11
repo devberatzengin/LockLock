@@ -14,7 +14,6 @@ class AccountForm(QWidget):
         layout.setSpacing(15)
         layout.setContentsMargins(15, 15, 15, 15)
 
-        # Style - DÜZELTİLDİ
         self.setStyleSheet("""
             QLabel {
                 color: #374151;
@@ -26,7 +25,7 @@ class AccountForm(QWidget):
                 background-color: #F9FAFB;
                 border: 1px solid #E5E7EB;
                 border-radius: 10px;
-                padding: 8px 12px; /* Padding azaltıldı, yazı sığsın */
+                padding: 8px 12px;
                 font-size: 14px;
                 color: #1F2937;
             }
@@ -34,8 +33,6 @@ class AccountForm(QWidget):
                 border: 2px solid #4F46E5;
                 background-color: white;
             }
-            
-            /* ComboBox Açılır Menü Düzeltmesi */
             QComboBox::drop-down {
                 border: 0px;
                 margin-right: 10px;
@@ -54,7 +51,7 @@ class AccountForm(QWidget):
         layout.addWidget(QLabel("Website / Service"))
         self.site_input = QLineEdit()
         self.site_input.setPlaceholderText("e.g. Netflix")
-        self.site_input.setFixedHeight(42) # Yükseklik biraz kısıldı
+        self.site_input.setFixedHeight(42)
         layout.addWidget(self.site_input)
 
         layout.addWidget(QLabel("Username / Email"))
@@ -65,7 +62,8 @@ class AccountForm(QWidget):
 
         layout.addWidget(QLabel("Password"))
         self.password_input = QLineEdit()
-        self.password_input.setPlaceholderText("••••••••")
+        # Düzenleme modunda placeholder değişecek
+        self.password_input.setPlaceholderText("••••••••") 
         self.password_input.setFixedHeight(42)
         layout.addWidget(self.password_input)
 
@@ -73,7 +71,6 @@ class AccountForm(QWidget):
         self.category_box = QComboBox()
         self.category_box.setFixedHeight(42)
         
-        # Kategorileri Ekle
         if self.categories:
             for cat_id, cat_name in self.categories:
                 self.category_box.addItem(cat_name, cat_id)
@@ -92,7 +89,18 @@ class AccountForm(QWidget):
         return {
             "site": self.site_input.text().strip(),
             "username": self.username_input.text().strip(),
-            "password": self.password_input.text(),
+            "password": self.password_input.text(), # Boş olabilir (değişmediyse)
             "category_id": self.category_box.currentData(),
             "notes": self.notes_input.toPlainText().strip()
         }
+
+    def set_data(self, account):
+        self.site_input.setText(account.site)
+        self.username_input.setText(account.username)
+        
+        self.password_input.clear()
+        self.password_input.setPlaceholderText("Leave empty to keep current password")
+        
+        index = self.category_box.findData(account.category_id)
+        if index >= 0:
+            self.category_box.setCurrentIndex(index)

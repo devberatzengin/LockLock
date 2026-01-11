@@ -20,3 +20,7 @@ env/
 # --- IDE Dosyaları (VSCode vb.) ---
 .vscode/
 .idea/
+
+# -- İcon
+
+app_icon.jpeg
