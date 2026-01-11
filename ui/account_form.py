@@ -6,97 +6,93 @@ from PyQt5.QtWidgets import (
 class AccountForm(QWidget):
     def __init__(self, categories=None):
         super().__init__()
-        # Kategori listesini tuple listesi olarak bekliyoruz: [(id, name), (id, name)]
         self.categories = categories or [] 
         self._build()
 
     def _build(self):
         layout = QVBoxLayout(self)
         layout.setSpacing(15)
-        layout.setContentsMargins(0,0,0,0)
+        layout.setContentsMargins(15, 15, 15, 15)
 
-        # Style Sheets
-        input_style = """
+        # Style - DÜZELTİLDİ
+        self.setStyleSheet("""
+            QLabel {
+                color: #374151;
+                font-weight: 700;
+                font-size: 13px;
+                margin-bottom: 4px;
+            }
             QLineEdit, QComboBox, QTextEdit {
                 background-color: #F9FAFB;
-                border: 1px solid #D1D5DB;
-                border-radius: 8px;
-                padding: 8px;
+                border: 1px solid #E5E7EB;
+                border-radius: 10px;
+                padding: 8px 12px; /* Padding azaltıldı, yazı sığsın */
                 font-size: 14px;
                 color: #1F2937;
             }
             QLineEdit:focus, QTextEdit:focus, QComboBox:focus {
-                border: 2px solid #2563EB;
+                border: 2px solid #4F46E5;
                 background-color: white;
             }
-        """
-        self.setStyleSheet(input_style)
-        
-        # Label Stili
-        label_style = "color: #374151; font-weight: 600; font-size: 13px;"
+            
+            /* ComboBox Açılır Menü Düzeltmesi */
+            QComboBox::drop-down {
+                border: 0px;
+                margin-right: 10px;
+            }
+            QComboBox QAbstractItemView {
+                background-color: white;
+                color: #1F2937;
+                selection-background-color: #4F46E5;
+                selection-color: white;
+                border: 1px solid #E5E7EB;
+                outline: none;
+            }
+        """)
 
-        # --- Fields ---
-        
-        # Website
-        l1 = QLabel("Website / Application")
-        l1.setStyleSheet(label_style)
+        # Fields
+        layout.addWidget(QLabel("Website / Service"))
         self.site_input = QLineEdit()
-        self.site_input.setPlaceholderText("e.g. google.com")
-        self.site_input.setFixedHeight(40)
+        self.site_input.setPlaceholderText("e.g. Netflix")
+        self.site_input.setFixedHeight(42) # Yükseklik biraz kısıldı
+        layout.addWidget(self.site_input)
 
-        # Username
-        l2 = QLabel("Username / Email")
-        l2.setStyleSheet(label_style)
+        layout.addWidget(QLabel("Username / Email"))
         self.username_input = QLineEdit()
-        self.username_input.setPlaceholderText("e.g. user@example.com")
-        self.username_input.setFixedHeight(40)
+        self.username_input.setPlaceholderText("e.g. hello@example.com")
+        self.username_input.setFixedHeight(42)
+        layout.addWidget(self.username_input)
 
-        # Password
-        l3 = QLabel("Password")
-        l3.setStyleSheet(label_style)
+        layout.addWidget(QLabel("Password"))
         self.password_input = QLineEdit()
         self.password_input.setPlaceholderText("••••••••")
-        self.password_input.setEchoMode(QLineEdit.Password)
-        self.password_input.setFixedHeight(40)
+        self.password_input.setFixedHeight(42)
+        layout.addWidget(self.password_input)
 
-        # Category
-        l4 = QLabel("Category")
-        l4.setStyleSheet(label_style)
+        layout.addWidget(QLabel("Category"))
         self.category_box = QComboBox()
-        self.category_box.setFixedHeight(40)
+        self.category_box.setFixedHeight(42)
         
-        # Kategorileri ComboBox'a yükle (UserData: ID)
+        # Kategorileri Ekle
         if self.categories:
             for cat_id, cat_name in self.categories:
                 self.category_box.addItem(cat_name, cat_id)
-
-        # Notes
-        l5 = QLabel("Notes (Optional)")
-        l5.setStyleSheet(label_style)
-        self.notes_input = QTextEdit()
-        self.notes_input.setPlaceholderText("Any additional info...")
-        self.notes_input.setFixedHeight(80)
-
-        # Add widgets
-        layout.addWidget(l1)
-        layout.addWidget(self.site_input)
-        layout.addWidget(l2)
-        layout.addWidget(self.username_input)
-        layout.addWidget(l3)
-        layout.addWidget(self.password_input)
-        layout.addWidget(l4)
+        
         layout.addWidget(self.category_box)
-        layout.addWidget(l5)
+
+        layout.addWidget(QLabel("Notes (Optional)"))
+        self.notes_input = QTextEdit()
+        self.notes_input.setPlaceholderText("Additional details...")
+        self.notes_input.setFixedHeight(80)
         layout.addWidget(self.notes_input)
 
+        layout.addStretch()
+
     def get_data(self):
-        # Seçili kategorinin ID'sini alıyoruz
-        cat_id = self.category_box.currentData()
-        
         return {
             "site": self.site_input.text().strip(),
             "username": self.username_input.text().strip(),
             "password": self.password_input.text(),
-            "category_id": cat_id,
+            "category_id": self.category_box.currentData(),
             "notes": self.notes_input.toPlainText().strip()
         }

@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import QFrame, QHBoxLayout, QLabel
 from PyQt5.QtCore import Qt, pyqtSignal
 
 class CategoryCard(QFrame):
-    clicked = pyqtSignal(int)  # Kategori ID'sini döner
+    clicked = pyqtSignal(int)
 
     def __init__(self, category_id: int, name: str, count: int = 0):
         super().__init__()
@@ -13,32 +13,29 @@ class CategoryCard(QFrame):
         self._build()
 
     def _build(self):
-        self.setFixedHeight(50)
+        self.setFixedHeight(48)
         self.setCursor(Qt.PointingHandCursor)
-        self.update_style()
-
+        
+        # Layout ve Widgetları ÖNCE oluşturuyoruz
         layout = QHBoxLayout(self)
-        layout.setContentsMargins(16, 0, 16, 0)
+        layout.setContentsMargins(15, 0, 15, 0)
+        layout.setSpacing(10)
 
-        # Kategori İsmi
+        # İsim
         self.name_label = QLabel(self.name)
-        self.name_label.setStyleSheet("background: transparent; border: none; font-weight: 500;")
+        self.name_label.setStyleSheet("background: transparent; border: none; font-weight: 600; font-size: 14px;")
 
-        # Sayı Badge'i
+        # Sayı Badge
         self.count_label = QLabel(str(self.count))
         self.count_label.setAlignment(Qt.AlignCenter)
-        self.count_label.setFixedSize(26, 26)
-        self.count_label.setStyleSheet("""
-            background-color: rgba(255, 255, 255, 0.1);
-            color: white;
-            border-radius: 13px;
-            font-size: 12px;
-            font-weight: bold;
-        """)
-
+        self.count_label.setFixedSize(24, 24)
+        
         layout.addWidget(self.name_label)
         layout.addStretch()
         layout.addWidget(self.count_label)
+
+        # Stili EN SON uyguluyoruz (Artık count_label var olduğu için hata vermez)
+        self.update_style()
 
     def set_active(self, active: bool):
         self.is_active = active
@@ -46,42 +43,45 @@ class CategoryCard(QFrame):
 
     def update_style(self):
         if self.is_active:
-            # Seçili Durum
-            bg = "#3B82F6" # Parlak Mavi
+            # Seçili: Arka plan hafif açık, yazı beyaz, badge mavi
+            bg = "rgba(255, 255, 255, 0.1)"
             text_color = "white"
-            border = "1px solid #3B82F6"
+            badge_bg = "#60A5FA" # Parlak mavi
+            badge_text = "white"
+            border = "border-left: 4px solid #60A5FA;" # Sol taraf çizgisi
         else:
-            # Normal Durum
-            bg = "#374151" # Koyu Gri
-            text_color = "#E5E7EB" # Açık Gri
-            border = "1px solid transparent"
+            # Normal: Şeffaf
+            bg = "transparent"
+            text_color = "#9CA3AF" # Gri
+            badge_bg = "#374151" # Koyu gri
+            badge_text = "#D1D5DB"
+            border = "border: none;"
 
         self.setStyleSheet(f"""
             QFrame {{
                 background-color: {bg};
-                border-radius: 10px;
-                border: {border};
+                border-radius: 6px;
+                {border}
             }}
             QFrame:hover {{
-                background-color: #4B5563; /* Hover rengi */
-                border: 1px solid #6B7280;
+                background-color: rgba(255, 255, 255, 0.05);
             }}
             QLabel {{
                 color: {text_color};
-                background: transparent;
                 border: none;
+                background: transparent; /* Label arka planı şeffaf olsun */
             }}
         """)
         
-        # Seçiliyse hover rengini bozma
-        if self.is_active:
-             self.setStyleSheet(f"""
-                QFrame {{
-                    background-color: {bg};
-                    border-radius: 10px;
-                }}
-                QLabel {{ color: white; background: transparent; }}
-             """)
+        # Badge stili özel olarak set edilmeli
+        self.count_label.setStyleSheet(f"""
+            background-color: {badge_bg};
+            color: {badge_text};
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+            border: none;
+        """)
 
     def mousePressEvent(self, event):
         self.clicked.emit(self.category_id)
