@@ -1,0 +1,22 @@
+# --- Python Bytecode (Tüm klasörlerdeki pycache'leri engeller) ---
+__pycache__/
+*.py[cod]
+*$py.class
+
+# --- macOS Gereksiz Dosyaları ---
+.DS_Store
+
+# --- Veritabanı (Bunu asla Github'a atma!) ---
+*.db
+*.sqlite3
+data/app.db
+
+# --- Sanal Ortam (Varsa) ---
+venv/
+.venv/
+env/
+.env
+
+# --- IDE Dosyaları (VSCode vb.) ---
+.vscode/
+.idea/
