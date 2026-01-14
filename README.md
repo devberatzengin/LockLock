@@ -1,116 +1,117 @@
-# 🔒 LoclLock
-
-**LoclLock**, verilerinizi bulutta değil, kendi cihazınızda şifreli olarak saklayan, modern arayüze sahip, güvenli ve açık kaynaklı bir parola yöneticisidir.
+# LockLock
 
 ![Python](https://img.shields.io/badge/Python-3.10%2B-blue)
 ![PyQt5](https://img.shields.io/badge/GUI-PyQt5-green)
 ![Security](https://img.shields.io/badge/Encryption-AES--256-red)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 
+LockLock is a desktop-based password manager application focused on secure credential storage, authentication workflows, and security-oriented system design. The project emphasizes backend logic, cryptographic principles, and clean architecture rather than UI complexity.
+
+This repository represents a learning-driven implementation of how password managers are built internally, with attention to correctness, maintainability, and security awareness.
+
 ---
 
-## 📖 Proje Hakkında
+## System Architecture
 
-LoclLock, "Önce Güvenlik" ve "Modern UX" prensipleriyle geliştirilmiştir. Kullanıcıların hassas verilerini (şifreler, notlar) **AES-256** standardı ile şifreler ve bu verilere erişim sadece kullanıcının belirlediği **Master Password (Ana Şifre)** ile mümkündür.
+LockLock follows a layered and modular architecture where each responsibility is clearly isolated:
 
-Veritabanı olarak **SQLite** kullanılır ancak veriler veritabanına yazılmadan *önce* şifrelenir. Bu sayede veritabanı dosyası (`app.db`) çalınsa bile içerisindeki veriler ana şifre olmadan anlamsızdır.
+* **UI Layer (PyQt5)**
+  Handles user interaction, form validation, and event handling. No sensitive logic is implemented at the UI level.
 
-## ✨ Özellikler
+* **Application Controller**
+  Manages application state transitions such as authentication, dashboard access, and secure session flow.
 
-* **🛡️ Askeri Düzeyde Şifreleme:** Veriler `cryptography` kütüphanesi kullanılarak Fernet (AES-128/256) simetrik şifreleme ile korunur.
-* **🔑 Güvenli Anahtar Türetme:** Ana şifreniz asla kaydedilmez. Bunun yerine `PBKDF2HMAC` ve `SHA256` kullanılarak her kullanıcı için benzersiz bir `salt` ile hash'lenir.
-* **🎨 Modern & Responsive UI:** PyQt5 ile geliştirilmiş, göz yormayan, "Dark Mode" destekli yan menü ve kategori bazlı renk kodlamasına sahip modern arayüz.
-* **📂 Kategorizasyon:** Hesaplarınızı (Sosyal, İş, Finans vb.) kategorilere ayırın. Her kategori otomatik olarak renklenir.
-* **⚡ Hızlı Erişim:** Tek tıkla şifre kopyalama, hesap düzenleme ve silme.
-* **🔍 Akıllı Arama:** Hesaplarınız arasında site adı veya kullanıcı adına göre anında arama yapın.
-* **🏠 %100 Yerel:** Hiçbir veri internete yüklenmez. Tüm kontrol sizde.
+* **Security Layer**
+  Responsible for encryption, key derivation, password verification, and secure data handling.
 
-## 🛠️ Kurulum
+* **Data Layer**
+  Manages local persistence, structured credential storage, and controlled data access.
 
-Projeyi yerel makinenizde çalıştırmak için aşağıdaki adımları izleyin.
+This separation of concerns improves readability, testability, and future extensibility.
 
-### Gereksinimler
-* Python 3.10 veya üzeri
-* pip
+---
 
-### Adım Adım Kurulum
+## Key Features
 
-1.  **Repoyu klonlayın:**
-    ```bash
-    git clone [https://github.com/kullaniciadiniz/LoclLock.git](https://github.com/kullaniciadiniz/LoclLock.git)
-    cd LoclLock
-    ```
+* **Military-Grade Encryption**
+  All sensitive credential data is protected using symmetric encryption based on the `cryptography` library and Fernet (AES-128/256).
 
-2.  **Sanal ortam oluşturun (Önerilen):**
-    ```bash
-    # Windows
-    python -m venv venv
-    venv\Scripts\activate
+* **Secure Key Derivation**
+  The master password is never stored directly. Instead, `PBKDF2HMAC` with `SHA256` is used along with a unique per-user salt to derive secure encryption keys.
 
-    # macOS/Linux
-    python3 -m venv venv
-    source venv/bin/activate
-    ```
+* **Authentication-Centered Design**
+  Access to all credential operations is strictly gated behind successful master password verification.
 
-3.  **Bağımlılıkları yükleyin:**
-    ```bash
-    pip install PyQt5 cryptography
-    ```
+* **Modern Desktop UI**
+  Built with PyQt5, featuring a clean dark-mode interface and intuitive navigation focused on usability.
 
-4.  **Uygulamayı başlatın:**
-    ```bash
-    python main.py
-    ```
+* **Credential Categorization**
+  Stored accounts can be grouped into categories such as Social, Work, or Finance, enabling better organization and clarity.
 
-## 🚀 Kullanım
+* **Fast Access Operations**
+  One-click password copy, credential edit, and secure deletion workflows.
 
-1.  **İlk Kurulum:** Uygulamayı ilk açtığınızda sizden bir **Master Password** belirlemeniz istenir. Bu şifreyi unutursanız verilerinize erişemezsiniz!
-2.  **Giriş:** Belirlediğiniz şifre ile kasanın kilidini açın.
-3.  **Hesap Ekleme:** `+ New Account` butonuna tıklayın. Site, kullanıcı adı, şifre ve kategori bilgilerini girin.
-4.  **Kategoriler:** Sol menüden kategorilere tıklayarak filtreleme yapın. Kartların kenar renkleri kategoriye göre değişecektir (Örn: Finans için Yeşil, Sosyal için Mavi).
+* **Smart Search**
+  Instant filtering of credentials by site name or username for quick access.
 
-## 🏗️ Teknik Mimari ve Tasarım Desenleri
+* **Fully Local Storage**
+  No data is transmitted or stored remotely. All credentials remain on the local machine under user control.
 
-LoclLock, sürdürülebilirlik, test edilebilirlik ve modülerlik ilkeleri gözetilerek **Model-View-Controller (MVC)** mimarisi üzerine inşa edilmiştir. Ayrıca "Service Layer" (Servis Katmanı) yaklaşımı ile iş mantığı veritabanı işlemlerinden izole edilmiştir.
+---
 
-### Mimari Katmanlar (MVC Breakdown)
+## Security Design Details
 
-Proje 4 ana katmandan oluşur:
+* Encryption keys are derived dynamically from the master password
+* Raw passwords are never stored in plain text
+* Sensitive operations require active authentication state
+* Data access is strictly controlled through the application controller
 
-* **🟦 Model (Veri Katmanı - `models/`):**
-    * Uygulamanın veri iskeletini oluşturur (`Account`, `Category`, `Log`).
-    * Saf Python sınıflarıdır; veritabanı bağlantısı veya UI kodu içermezler.
-    * Veri doğrulama (Validation) işlemleri (örn: şifre boş olamaz) burada yapılır.
-    * *Örnek:* `Account` sınıfı, bir hesabın şifreli parolasını ve oluşturulma tarihini tutar.
+The architecture is intentionally designed to be encryption-ready and adaptable to stronger cryptographic standards.
 
-* **🟪 View (Arayüz Katmanı - `ui/`):**
-    * Kullanıcının gördüğü PyQt5 pencereleridir (`Dashboard`, `LoginScreen`).
-    * İş mantığı barındırmazlar (Dumb UI). Sadece veriyi gösterir ve kullanıcı girdilerini **Sinyaller (Signals)** aracılığıyla Controller'a iletirler.
-    * CSS benzeri QSS (Qt Style Sheets) ile modernize edilmiştir.
+---
 
-* **🟧 Controller (Kontrol Katmanı - `controller/`):**
-    * Uygulamanın "beyni"dir. View ile Model/Service arasındaki iletişimi yönetir.
-    * View'dan gelen sinyalleri (örn: "Kaydet butonuna basıldı") yakalar, veriyi işler ve sonucu tekrar View'a gönderir.
-    * *Örnek:* `VaultController`, arayüzden gelen ham şifreyi alır, `EncryptionService`'e şifreletir ve `StorageService`'e kaydettirir.
+## Application Flow
 
-* **🟩 Service (Servis Katmanı - `services/`):**
-    * Tekrar kullanılabilir, düşük seviyeli işlemleri yapan yardımcı sınıflardır.
-    * **EncryptionService:** Şifreleme/Çözme ve Anahtar Türetme işlemlerini yönetir.
-    * **StorageService:** SQLite veritabanı ile konuşan tek katmandır (SQL sorguları sadece buradadır).
+1. Application startup
+2. Master password setup or input
+3. Key derivation and password verification
+4. Secure dashboard access granted
+5. Credential operations enabled
+6. Application lock or exit
 
-### Dizin Yapısı
+This flow enforces a single secure entry point to all sensitive data.
 
-```plaintext
-LoclLock/
-├── controller/        # İş Mantığı (Business Logic)
-│   ├── app_controller.py   # Uygulama yaşam döngüsü ve giriş kontrolü
-│   ├── auth_controller.py  # Master password doğrulama işlemleri
-│   └── vault_controller.py # Hesap ekleme, silme, listeleme mantığı
-├── models/            # Veri Objeleri (Data Transfer Objects)
-├── services/          # Çekirdek Servisler (Core Services)
-│   ├── encryption_service.py # AES-256 & PBKDF2 mantığı
-│   ├── storage_service.py    # SQLite Wrapper
-│   └── search_service.py     # Arama algoritmaları
-├── ui/                # Görsel Arayüz (GUI)
-├── data/              # Veritabanı (app.db)
-└── main.py            # Uygulama Başlatıcısı (Entry Point)
+---
+
+## Technologies Used
+
+* Programming Language: Python
+* UI Framework: PyQt5
+* Cryptography: cryptography (Fernet, PBKDF2HMAC, SHA256)
+* Architecture: Modular layered design
+* Version Control: Git
+
+---
+
+## Concepts Practiced
+
+* Cryptographic fundamentals
+* Authentication and access control
+* Secure local data storage
+* Modular software architecture
+* State management in desktop applications
+
+---
+
+## Disclaimer
+
+This project is built strictly for educational purposes. It is not intended for production use without additional security hardening, formal audits, and advanced key management strategies.
+
+---
+
+## Author
+
+**Berat Zengin**
+
+* GitHub: [https://github.com/devberatzengin](https://github.com/devberatzengin)
+* LinkedIn: [https://linkedin.com/in/berat-zengin-1a337a294](https://linkedin.com/in/berat-zengin-1a337a294)
