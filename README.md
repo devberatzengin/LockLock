@@ -13,7 +13,7 @@ This repository represents a learning-driven implementation of how password mana
 
 ## App Video
 
-![](./assets/ScreenRecordLockLock.mov)
+<video src="assets/ScreenRecordLoclLock.mov" width="100%" controls></video>
 
 ---
 
