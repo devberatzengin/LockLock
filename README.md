@@ -11,6 +11,12 @@ This repository represents a learning-driven implementation of how password mana
 
 ---
 
+## App Video
+
+![](./assets/ScreenRecordLockLock.mov)
+
+---
+
 ## System Architecture
 
 LockLock follows a layered and modular architecture where each responsibility is clearly isolated:
